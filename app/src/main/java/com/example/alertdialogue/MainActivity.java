@@ -4,33 +4,56 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+
+ String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        final EditText editText=findViewById( R.id.name );
-        Button button=findViewById( R.id.btn );
+
+        Button button =findViewById( R.id.btn );
 
         button.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name=editText.getText().toString().trim();
-                AlertDialog.Builder alertdialog=new AlertDialog.Builder(MainActivity.this);
-                alertdialog.setTitle( "Hi "+name+". Welcome to Codengocool " );
-                alertdialog.setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
+
+                AlertDialog.Builder alertdialog =new AlertDialog.Builder( MainActivity.this );
+                alertdialog.setTitle( "Choose any one language" );
+                String[] items={"Bengal","English","Korean"};
+                int checkeditem=0;
+                alertdialog.setSingleChoiceItems( items, checkeditem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        switch (i){
+                            case 0:
+                                language="Bengal";
+                                break;
+                            case 1:
+                                language="English";
+                                break;
+                            case 2:
+                                language="Korean";
+                                break;
+                        }
+                    }
+                } );
+
+                alertdialog.setPositiveButton( "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
                         dialogInterface.dismiss();
-                        Intent intent=new Intent( MainActivity.this,Second.class );
-                        startActivity( intent );
+                        Toast.makeText(MainActivity.this, "You have chosen "+language,Toast.LENGTH_LONG ).show();
                     }
                 } );
 
@@ -41,13 +64,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } );
 
-                AlertDialog alert = alertdialog.create();
+                AlertDialog alert=alertdialog.create();
                 alert.setCanceledOnTouchOutside( false );
                 alert.show();
             }
         } );
-
-
 
     }
 }
